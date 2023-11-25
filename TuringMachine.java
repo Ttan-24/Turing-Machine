@@ -76,19 +76,14 @@ class TuringMachine {
     stateTable = _stateTable;
   }
 
-  public void PrintTape(int tapeIndex)
-  {
+  public void PrintTape(int tapeIndex) {
     System.out.print("Tape: ");
-    for (int i = 0; i < tape.symbols.size(); i++)
-    {
-      if (i == tapeIndex)
-      {
+    for (int i = 0; i < tape.symbols.size(); i++) {
+      if (i == tapeIndex) {
         System.out.print("*");
         System.out.print(tape.symbols.get(i));
         System.out.print("*");
-      }
-      else
-      {
+      } else {
         System.out.print(" ");
         System.out.print(tape.symbols.get(i));
         System.out.print(" ");
@@ -98,7 +93,7 @@ class TuringMachine {
   }
 
   public void run() {
-    int tapeIndex = tape.symbols.size() - 2;
+    int tapeIndex = 1;
 
     State currentState = stateTable.states.get(0);
     boolean running = true;
@@ -142,63 +137,124 @@ class TuringMachine {
 class Main {
   public static void main(String[] args) {
     System.out.println("Hello world!");
+		////////////////////////////////Add one////////////////////////////
+    // // State 1
+    // State state1 = new State(new InstructionSet(-1, -1, -1, 1),
+    //     new InstructionSet(0, 0, 1, 0),
+    //     new InstructionSet(1, 1, 1, 0));
 
-		// State 1
-		// State state1 = new State(new InstructionSet(-1, -1, 1, 1),
-		//     new InstructionSet(0, 0, -1, 0),
-		//     new InstructionSet(1, 1, -1, 0));
+    // // State 2
+    // State state2 = new State(new InstructionSet(-1, 1, 1, 2),
+    //     new InstructionSet(0, 1, -1, 2),
+    //     new InstructionSet(1, 0, -1, 1));
+
+    // // State 3
+    // State state3 = new State(new InstructionSet(-1, -1, -1, -1),
+    //     new InstructionSet(0, 0, 1, 2),
+    //     new InstructionSet(1, 1, 1, 2));
+
+		/////////////////////////////////Sub one////////////////////
+		// // State 1
+		// State state1 = new State(new InstructionSet(-1, -1, -1, 1),
+		// 		new InstructionSet(0, 0, 1, 0),
+		// 		new InstructionSet(1, 1, 1, 0));
 
 		// // State 2
-		// State state2 = new State(new InstructionSet(-1, -1, -1, -1),
-		//     new InstructionSet(0, 0, 1, 1),
-		//     new InstructionSet(1, 1, 1, 1));
+		// State state2 = new State(new InstructionSet(-1, 1, 1, 2),
+		// 		new InstructionSet(0, 1, -1, 1),
+		// 		new InstructionSet(1, 0, -1, 2));
 
 		// // State 3
-		// State state3 = new State(new InstructionSet(-1, -1, 1, 1),
-		//     new InstructionSet(0, 0, -1, 0),
-		//     new InstructionSet(1, 1, -1, 0));
+		// State state3 = new State(new InstructionSet(-1, -1, -1, -1),
+		// 		new InstructionSet(0, 0, 1, 2),
+		// 		new InstructionSet(1, 1, 1, 2));
 
-		State state0 = new State(new InstructionSet(-1, -1, -1, 1),
-				new InstructionSet(0, 0, 1, 0),
-				new InstructionSet(1, 1, 1, 0));
 
-		State state1 = new State(new InstructionSet(-1, 1, 0, -1),
-				new InstructionSet(0, -1, -1, 2),
-				new InstructionSet(1, -1, -1, 4));
+		////////////////////////////////Addition ////////////////////////////
 
-		State state2 = new State(new InstructionSet(-1, -1, 1, 3),
-				new InstructionSet(0, 0, -1, 2),
-				new InstructionSet(1, 1, -1, 2));
+    // Subtraction states
+		State readLeftToRightState = new State(new InstructionSet(-1, -1, -1, 1),
+		    new InstructionSet(0, 0, 1, 0),
+		    new InstructionSet(1, 1, 1, 0));
+		State subtractionReplaceState = new State(new InstructionSet(-1, 1, 1, 2),
+		    new InstructionSet(0, 1, -1, 1),
+		    new InstructionSet(1, 0, -1, 2));
+		State jumpLeftToRightState = new State(new InstructionSet(-1, -1, 1, 3),
+		    new InstructionSet(0, 0, 1, 2),
+		    new InstructionSet(1, 1, 1, 2));
 
-		State state3 = new State(new InstructionSet(-1, -1, 0, 0),
-				new InstructionSet(0, -1, 1, 0),
-				new InstructionSet(1, 1, 0, 6));
+    // Addition states
+		State readLeftToRightState2 = new State(new InstructionSet(-1, -1, -1, 4),
+				new InstructionSet(0, 0, 1, 3),
+				new InstructionSet(1, 1, 1, 3));
+		State additionReplaceState = new State(new InstructionSet(-1, 1, 1, 5),
+				new InstructionSet(0, 1, -1, 5),
+				new InstructionSet(1, 0, -1, 4));
+		State exitRightState = new State(new InstructionSet(-1, -1, -1, -1),
+				new InstructionSet(0, 0, 1, 5),
+				new InstructionSet(1, 1, 1, 5));
 
-		State state4 = new State(new InstructionSet(-1, -1, 1, 5),
-				new InstructionSet(0, 0, -1, 4),
-				new InstructionSet(1, 1, -1, 4));
+    /* 
+    New behaviour we need:
+    - Jump over
+    */
 
-		State state5 = new State(new InstructionSet(-1, -1, 0, 0),
-				new InstructionSet(0, 0, 0, 6),
-				new InstructionSet(1, 0, 1, 0));
 
-		State state6 = new State(new InstructionSet(-1, 0, 0, -1),
-				new InstructionSet(0, 0, 1, 6),
-				new InstructionSet(1, 0, 1, 6));
+    //////////////////////////////// Palindrome ////////////////////////////
+		
+    // State state0 = new State(new InstructionSet(-1, -1, -1, 1),
+    // new InstructionSet(0, 0, 1, 0),
+    // new InstructionSet(1, 1, 1, 0));
 
-		// State table
-		StateTable stateTable = new StateTable();
-		stateTable.states.add(state0);
-		stateTable.states.add(state1);
-		stateTable.states.add(state2);
-		stateTable.states.add(state3);
-		stateTable.states.add(state4);
-		stateTable.states.add(state5);
-		stateTable.states.add(state6);
+    // State state1 = new State(new InstructionSet(-1, 1, 0, -1),
+    // new InstructionSet(0, -1, -1, 2),
+    // new InstructionSet(1, -1, -1, 4));
 
-		// Turing machine
-		Tape tape = new Tape(new ArrayList<Integer>(Arrays.asList(-1, 0, 1, 1, 0, -1)));
-		TuringMachine turingMachine = new TuringMachine(tape, stateTable);
-		turingMachine.run();
-	}
+    // State state2 = new State(new InstructionSet(-1, -1, 1, 3),
+    // new InstructionSet(0, 0, -1, 2),
+    // new InstructionSet(1, 1, -1, 2));
+
+    // State state3 = new State(new InstructionSet(-1, -1, 0, 0),
+    // new InstructionSet(0, -1, 1, 0),
+    // new InstructionSet(1, 1, 0, 6));
+
+    // State state4 = new State(new InstructionSet(-1, -1, 1, 5),
+    // new InstructionSet(0, 0, -1, 4),
+    // new InstructionSet(1, 1, -1, 4));
+
+    // State state5 = new State(new InstructionSet(-1, -1, 0, 0),
+    // new InstructionSet(0, 0, 0, 6),
+    // new InstructionSet(1, 0, 1, 0));
+
+    // State state6 = new State(new InstructionSet(-1, 0, 0, -1),
+    // new InstructionSet(0, 0, 1, 6),
+    // new InstructionSet(1, 0, 1, 6));
+
+    // State table
+    StateTable stateTable = new StateTable();
+    // stateTable.states.add(state0);
+    stateTable.states.add(readLeftToRightState);
+    stateTable.states.add(subtractionReplaceState);
+    stateTable.states.add(jumpLeftToRightState);
+    stateTable.states.add(readLeftToRightState2);
+    stateTable.states.add(additionReplaceState);
+    stateTable.states.add(exitRightState);
+
+    // Turing machine
+    Tape tape = new Tape(new ArrayList<Integer>(Arrays.asList(-1, 0, 1, 1, 1, -1, 0, 1, 1, 0, -1)));
+    TuringMachine turingMachine = new TuringMachine(tape, stateTable);
+    turingMachine.run();
+  }
 }
+
+/*
+7 + 6 = 13
+0111   0110
+0110	 0111
+0101   1000
+0100   1001
+0011   1010
+0010   1011
+0001   1100
+0000   1101
+*/
