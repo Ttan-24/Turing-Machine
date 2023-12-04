@@ -147,7 +147,7 @@ class Main {
 		State subtractionReplaceState = new State(
 				new InstructionSet('B', 'B', 1, 6),
 				new InstructionSet('0', '1', -1, 1),
-				new InstructionSet('1', '0', -1, 2));
+				new InstructionSet('1', '0', 1, 2));
 
 		State jumpLeftToRightState = new State(
 				new InstructionSet('B', 'B', 1, 3),
@@ -161,7 +161,7 @@ class Main {
 				new InstructionSet('1', '1', 1, 3));
 
 		State additionReplaceState = new State(
-				new InstructionSet('B', '1', 1, 5),
+				new InstructionSet('B', 'B', 1, 7), // turn into new state
 				new InstructionSet('0', '1', -1, 5),
 				new InstructionSet('1', '0', -1, 4));
 
@@ -176,6 +176,20 @@ class Main {
 			new InstructionSet('0', '0', 1, 6),
 			new InstructionSet('1', '0', 1, 6));
 
+    // Start expand state (replaces just the first integer with 1)
+    State startExpandState = new State(
+      new InstructionSet('B', '0', 0, null),
+      new InstructionSet('0', '1', 1, 8),
+      new InstructionSet('0', '0', 0, null));
+
+    // Expand state (all into 0 until blank, replace that blank, now into jump left)
+    State expandState = new State(
+      new InstructionSet('B', '0', -1, 5),
+      new InstructionSet('0', '0', 1, 8),
+      new InstructionSet('1', '0', 1, 8));
+    
+    
+
 		//////////////////////////////// State table ////////////////////////////
 
 		// State table
@@ -186,12 +200,15 @@ class Main {
 		stateTable.states.add(readLeftToRightState2);
 		stateTable.states.add(additionReplaceState);
 		stateTable.states.add(jumptoLeftState);
-		stateTable.states.add(cleanupState);
+    stateTable.states.add(cleanupState);
+    stateTable.states.add(startExpandState);
+    stateTable.states.add(expandState);
 
 		//////////////////////////////// Turing Machine ////////////////////////////
 
 		// Turing machine
-		Tape tape = new Tape(new ArrayList<Character>(Arrays.asList('B', '0', '1', '0', '0', '0', 'B', '0', '1', '0', '0', '0', 'B')));
+		Tape tape = new Tape(new ArrayList<Character>(Arrays.asList('B', '1', '1', '1', '1', '1', 'B', '1', '0', 'B', 'B', 'B', 'B', 'B', 'B', 'B')));
+		
 		TuringMachine turingMachine = new TuringMachine(tape, stateTable);
 		turingMachine.run();
 
@@ -200,21 +217,3 @@ class Main {
 		tape.PrintTape(-1);
 	}
 }
-
-/*
- * 7 + 6 = 13
- * 0111 0110
- * 0110 0111
- * 0101 1000
- * 0100 1001
- * 0011 1010
- * 0010 1011
- * 0001 1100
- * 0000 1101
- */
-
-/* 
-* 1 + 2 = 3
-0001 + 0010
-0011
-*/
